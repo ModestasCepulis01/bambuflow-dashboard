@@ -1,6 +1,9 @@
 package com.modestasc.bambuflow_backend.mqtt;
 
+import com.modestasc.bambuflow_backend.mqtt.interfaces.MqttClientFactory;
+import com.modestasc.bambuflow_backend.mqtt.interfaces.TelemetryListener;
 import org.eclipse.paho.client.mqttv3.*;
+import org.springframework.stereotype.Component;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -10,6 +13,7 @@ import java.security.cert.X509Certificate;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+@Component
 public class BambuMqttClient {
     private final MqttClientFactory factory;
     private MqttClient client;
@@ -24,7 +28,7 @@ public class BambuMqttClient {
         this.factory = factory;
     }
 
-    public void connect(String hostIp, String serial, String accessCode) throws Exception {
+    public void connect(String hostIp, String serial, String accessCode, TelemetryListener listener) throws Exception {
         String uri = "ssl://" + hostIp + ":8883";
         client = factory.create(uri, MqttClient.generateClientId());
 
@@ -48,7 +52,7 @@ public class BambuMqttClient {
         String topic = "device/" + serial + "/report";
         client.subscribe(topic, (t, msg) -> {
             String json = new String(msg.getPayload(), UTF_8);
-            System.out.println(json);
+            listener.onTelemetryJson(json);
         });
     }
 

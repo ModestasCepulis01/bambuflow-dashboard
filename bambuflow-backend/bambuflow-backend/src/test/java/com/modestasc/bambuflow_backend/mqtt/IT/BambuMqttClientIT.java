@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BambuMqttClientIT {
 
     @Test
-    void connectsToRealPrinter() throws Exception {
+    void connectToRealPrinter() throws Exception {
         String host = System.getenv("BAMBU_HOST");
         String serial = System.getenv("BAMBU_SERIAL");
         String code = System.getenv("BAMBU_ACCESS_CODE");
@@ -20,7 +20,7 @@ class BambuMqttClientIT {
         BambuMqttClient client = new BambuMqttClient();
 
         assertDoesNotThrow(() -> {
-            client.connect(host, serial, code);
+            client.connect(host, serial, code, json -> {});
             client.close();
         });
     }

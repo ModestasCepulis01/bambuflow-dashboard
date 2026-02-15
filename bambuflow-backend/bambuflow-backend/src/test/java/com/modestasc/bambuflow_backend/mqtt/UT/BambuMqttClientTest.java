@@ -1,7 +1,7 @@
 package com.modestasc.bambuflow_backend.mqtt.UT;
 
 import com.modestasc.bambuflow_backend.mqtt.BambuMqttClient;
-import com.modestasc.bambuflow_backend.mqtt.MqttClientFactory;
+import com.modestasc.bambuflow_backend.mqtt.interfaces.MqttClientFactory;
 import org.eclipse.paho.client.mqttv3.*;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +24,7 @@ public class BambuMqttClientTest {
         BambuMqttClient bambu = new BambuMqttClient(mockFactory);
 
         //Act
-        bambu.connect("192.168.1.1", "SERIAL123", "CODE1234");
+        bambu.connect("192.168.1.1", "SERIAL123", "CODE1234", json -> {});
 
         //Assert
         verify(mockClient).connect(any(MqttConnectOptions.class));
@@ -41,7 +41,7 @@ public class BambuMqttClientTest {
         doNothing().when(mockClient).connect(any());
         doNothing().when(mockClient).subscribe(anyString(), any(IMqttMessageListener.class));
 
-        bambu.connect("192.168.1.1", "SERIAL123", "CODE1234");
+        bambu.connect("192.168.1.1", "SERIAL123", "CODE1234", json -> {});
         bambu.close();
 
         verify(mockClient).disconnect();

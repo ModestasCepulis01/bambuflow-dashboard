@@ -1,4 +1,4 @@
-package com.modestasc.bambuflow_backend.mqtt;
+package com.modestasc.bambuflow_backend.mqtt.interfaces;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
